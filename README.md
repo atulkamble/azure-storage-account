@@ -1,4 +1,4 @@
-## 📦 Azure Storage Accounts: Full Setup with Codes
+# 📦 Azure Storage Accounts: Full Setup with Codes
 
 ---
 
@@ -8,7 +8,7 @@ Azure Storage Account is a cloud storage solution providing object, file, queue,
 
 ---
 
-## 🛠️ Steps to Create a Storage Account:
+## 🛠️ Steps to Create a Storage Account
 
 1. **Create a Resource Group**
 2. **Create a Storage Account**
@@ -17,7 +17,51 @@ Azure Storage Account is a cloud storage solution providing object, file, queue,
 
 ---
 
-## 📌 Azure CLI Commands
+## 📌 Azure Storage Services - Key Points
+
+### 🔹 Overview
+
+* Scalable, durable, highly available cloud storage.
+* Storage Types: **Blob**, **File Shares**, **Queues**, **Tables**, **Managed Disks**.
+
+### 🔹 Types of Azure Storage
+
+1. **Blob Storage** – Object storage for unstructured data.
+2. **File Shares** – Managed file shares accessible via SMB/NFS.
+3. **Queue Storage** – Message queueing.
+4. **Table Storage** – NoSQL key-value database.
+5. **Azure Managed Disks** – Virtual disks for VMs.
+
+### 🔹 Blob Types
+
+* **Block Blob** – For large files.
+* **Page Blob** – Random read/write (used for Azure VMs).
+* **Append Blob** – Optimized for append operations.
+
+### 🔹 Disk Types
+
+* **Premium SSD (v2/v1)**
+* **Standard SSD**
+* **Standard HDD**
+
+### 🔹 Access Keys & SAS
+
+* **Access Keys**: Full access to storage account.
+* **SAS Token**: Limited, time-restricted access.
+
+### 🔹 Data Protection & Redundancy
+
+* **Replication Types**: LRS, ZRS, GRS, GZRS, RAGRS, RAGZRS
+* **Features**: Versioning, Soft Delete, Snapshot, Change Feed, Object Replication, Inventory, Lifecycle Policies.
+
+### 🔹 Static Website Hosting & CDN
+
+* Host static web apps via Storage Account.
+* Integrate with Azure CDN for global delivery.
+
+---
+
+## 🕌 Azure CLI Commands
 
 > Ensure you're logged in:
 
@@ -61,9 +105,15 @@ az storage account show --name mystorageacct12345 --resource-group MyResourceGro
 az storage account delete --name mystorageacct12345 --resource-group MyResourceGroup
 ```
 
+**List Storage Account Keys**
+
+```bash
+az storage account keys list --account-name mystorageacct12345 --resource-group MyResourceGroup -o table
+```
+
 ---
 
-## 📌 Azure PowerShell Commands
+## 🕌 Azure PowerShell Commands
 
 > Ensure you're logged in:
 
@@ -102,7 +152,7 @@ Remove-AzStorageAccount -ResourceGroupName "MyResourceGroup" -Name "mystorageacc
 
 ---
 
-## 📌 ARM Template
+## 🕌 ARM Template
 
 📄 `storageAccount.json`
 
@@ -145,7 +195,7 @@ az deployment group create --resource-group MyResourceGroup --template-file stor
 
 ---
 
-## 📌 Bicep Template
+## 🕌 Bicep Template
 
 📄 `storageAccount.bicep`
 
@@ -174,7 +224,7 @@ az deployment group create --resource-group MyResourceGroup --template-file stor
 
 ---
 
-## 📌 Terraform
+## 🕌 Terraform
 
 📄 `main.tf`
 
@@ -209,9 +259,9 @@ terraform apply
 
 ---
 
-## 📌 Repo Suggestion Name
+## 🕌 Repo Suggestion Name
 
-✅ `azure-storage-account-provisioning`
+👉 `azure-storage-account-provisioning`
 
 **Structure:**
 
@@ -233,21 +283,10 @@ azure-storage-account-provisioning/
 
 ---
 
-## 📚 Bonus: List Storage Account Keys (CLI)
-
-```bash
-az storage account keys list --account-name mystorageacct12345 --resource-group MyResourceGroup -o table
-```
-
----
-
-## ✅ Summary
-
-We covered:
+## 📚 Summary
 
 * ✅ Azure CLI
 * ✅ Azure PowerShell
 * ✅ ARM Template
 * ✅ Bicep
 * ✅ Terraform
-

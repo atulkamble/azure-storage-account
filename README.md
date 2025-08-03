@@ -292,7 +292,7 @@ az storage blob upload \
 az storage blob upload \
   --account-name atulkamble9796857478 \
   --container-name mycontainer \
-  --file /Users/atul \
+  --file /Users/atul/Downloads \
   --name a.txt
 ```
 

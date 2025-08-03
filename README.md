@@ -258,35 +258,106 @@ terraform apply
 ```
 
 ---
+Let’s practice Azure Storage Account Upload Scenarios based on different Azure Storage Types. I’ll give you CLI-based examples for each type:
 
-## 🕌 Repo Suggestion Name
+⸻
 
-👉 `azure-storage-account-provisioning`
+Azure Storage Types & Upload Practice
 
-**Structure:**
+Storage Type	Use Case	Upload Command Example (Azure CLI)
+Blob Storage	Large unstructured data (images, videos)	az storage blob upload
+File Storage (File Shares)	Lift-and-shift apps, SMB shares	az storage file upload
+Queue Storage	Message queues (not for files)	Not applicable (use az storage message put)
+Table Storage	NoSQL key-value pairs (not for files)	Not applicable (use az storage entity insert)
 
-```
-azure-storage-account-provisioning/
-├── cli/
-│   └── storage-account-cli.sh
-├── powershell/
-│   └── storage-account.ps1
-├── arm-template/
-│   └── storageAccount.json
-├── bicep/
-│   └── storageAccount.bicep
-├── terraform/
-│   ├── main.tf
-│   └── variables.tf
-└── README.md
-```
 
----
+⸻
 
-## 📚 Summary
+1. Blob Storage Upload
 
-* ✅ Azure CLI
-* ✅ Azure PowerShell
-* ✅ ARM Template
-* ✅ Bicep
-* ✅ Terraform
+# Variables
+STORAGE_ACCOUNT_NAME=<your_storage_account>
+CONTAINER_NAME=<your_container_name>
+FILE_PATH=/path/to/file.txt
+
+# Upload file to Blob Container
+az storage blob upload \
+  --account-name $STORAGE_ACCOUNT_NAME \
+  --container-name $CONTAINER_NAME \
+  --file $FILE_PATH \
+  --name file.txt
+
+
+⸻
+
+2. File Storage Upload (File Shares)
+
+# Variables
+STORAGE_ACCOUNT_NAME=<your_storage_account>
+SHARE_NAME=<your_fileshare_name>
+FILE_PATH=/path/to/file.txt
+
+# Upload file to File Share
+az storage file upload \
+  --account-name $STORAGE_ACCOUNT_NAME \
+  --share-name $SHARE_NAME \
+  --source $FILE_PATH
+
+
+⸻
+
+3. Queue Storage (Add Message to Queue)
+
+# Variables
+STORAGE_ACCOUNT_NAME=<your_storage_account>
+QUEUE_NAME=<your_queue_name>
+MESSAGE_CONTENT="Hello Azure Queue"
+
+# Put message into queue
+az storage message put \
+  --account-name $STORAGE_ACCOUNT_NAME \
+  --queue-name $QUEUE_NAME \
+  --content "$MESSAGE_CONTENT"
+
+
+⸻
+
+4. Table Storage (Insert Entity)
+
+# Variables
+STORAGE_ACCOUNT_NAME=<your_storage_account>
+TABLE_NAME=<your_table_name>
+PARTITION_KEY="SamplePartition"
+ROW_KEY="1"
+DATA='{"Name":"Atul","Role":"Architect"}'
+
+# Insert entity into Table
+az storage entity insert \
+  --account-name $STORAGE_ACCOUNT_NAME \
+  --table-name $TABLE_NAME \
+  --entity PartitionKey=$PARTITION_KEY RowKey=$ROW_KEY Name=Atul Role=Architect
+
+
+⸻
+
+Common Prerequisites
+
+# Login to Azure
+az login
+
+# Set subscription (optional)
+az account set --subscription <subscription_id>
+
+
+⸻
+
+Summary
+
+Storage Type	Command Used
+Blob Storage	az storage blob upload
+File Storage	az storage file upload
+Queue Storage	az storage message put
+Table Storage	az storage entity insert
+
+
+⸻

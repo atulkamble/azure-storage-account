@@ -258,23 +258,24 @@ terraform apply
 ```
 
 ---
-Let’s practice Azure Storage Account Upload Scenarios based on different Azure Storage Types. I’ll give you CLI-based examples for each type:
+Let's practice **Azure Storage Account Upload Scenarios** based on different **Azure Storage Types**. I’ll give you CLI-based examples for each type:
 
-⸻
+---
 
-Azure Storage Types & Upload Practice
+## **Azure Storage Types & Upload Practice**
 
-Storage Type	Use Case	Upload Command Example (Azure CLI)
-Blob Storage	Large unstructured data (images, videos)	az storage blob upload
-File Storage (File Shares)	Lift-and-shift apps, SMB shares	az storage file upload
-Queue Storage	Message queues (not for files)	Not applicable (use az storage message put)
-Table Storage	NoSQL key-value pairs (not for files)	Not applicable (use az storage entity insert)
+| **Storage Type**               | **Use Case**                             | **Upload Command Example (Azure CLI)**          |
+| ------------------------------ | ---------------------------------------- | ----------------------------------------------- |
+| **Blob Storage**               | Large unstructured data (images, videos) | `az storage blob upload`                        |
+| **File Storage (File Shares)** | Lift-and-shift apps, SMB shares          | `az storage file upload`                        |
+| **Queue Storage**              | Message queues (not for files)           | Not applicable (use `az storage message put`)   |
+| **Table Storage**              | NoSQL key-value pairs (not for files)    | Not applicable (use `az storage entity insert`) |
 
+---
 
-⸻
+## **1. Blob Storage Upload**
 
-1. Blob Storage Upload
-
+```bash
 # Variables
 STORAGE_ACCOUNT_NAME=<your_storage_account>
 CONTAINER_NAME=<your_container_name>
@@ -286,12 +287,13 @@ az storage blob upload \
   --container-name $CONTAINER_NAME \
   --file $FILE_PATH \
   --name file.txt
+```
 
+---
 
-⸻
+## **2. File Storage Upload (File Shares)**
 
-2. File Storage Upload (File Shares)
-
+```bash
 # Variables
 STORAGE_ACCOUNT_NAME=<your_storage_account>
 SHARE_NAME=<your_fileshare_name>
@@ -302,12 +304,13 @@ az storage file upload \
   --account-name $STORAGE_ACCOUNT_NAME \
   --share-name $SHARE_NAME \
   --source $FILE_PATH
+```
 
+---
 
-⸻
+## **3. Queue Storage (Add Message to Queue)**
 
-3. Queue Storage (Add Message to Queue)
-
+```bash
 # Variables
 STORAGE_ACCOUNT_NAME=<your_storage_account>
 QUEUE_NAME=<your_queue_name>
@@ -318,12 +321,13 @@ az storage message put \
   --account-name $STORAGE_ACCOUNT_NAME \
   --queue-name $QUEUE_NAME \
   --content "$MESSAGE_CONTENT"
+```
 
+---
 
-⸻
+## **4. Table Storage (Insert Entity)**
 
-4. Table Storage (Insert Entity)
-
+```bash
 # Variables
 STORAGE_ACCOUNT_NAME=<your_storage_account>
 TABLE_NAME=<your_table_name>
@@ -336,28 +340,31 @@ az storage entity insert \
   --account-name $STORAGE_ACCOUNT_NAME \
   --table-name $TABLE_NAME \
   --entity PartitionKey=$PARTITION_KEY RowKey=$ROW_KEY Name=Atul Role=Architect
+```
 
+---
 
-⸻
+## **Common Prerequisites**
 
-Common Prerequisites
-
+```bash
 # Login to Azure
 az login
 
 # Set subscription (optional)
 az account set --subscription <subscription_id>
+```
 
+---
 
-⸻
+## **Summary**
 
-Summary
+| **Storage Type** | **Command Used**           |
+| ---------------- | -------------------------- |
+| Blob Storage     | `az storage blob upload`   |
+| File Storage     | `az storage file upload`   |
+| Queue Storage    | `az storage message put`   |
+| Table Storage    | `az storage entity insert` |
 
-Storage Type	Command Used
-Blob Storage	az storage blob upload
-File Storage	az storage file upload
-Queue Storage	az storage message put
-Table Storage	az storage entity insert
+---
 
-
-⸻
+### Do you want a **Terraform automation script** for uploading files to Azure Blob & File Share?

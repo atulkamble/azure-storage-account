@@ -288,6 +288,13 @@ az storage blob upload \
   --file $FILE_PATH \
   --name file.txt
 ```
+```
+az storage blob upload \
+  --account-name atulkamble9796857478 \
+  --container-name mycontainer \
+  --file $FILE_PATH \
+  --name file.txt
+```
 
 ---
 

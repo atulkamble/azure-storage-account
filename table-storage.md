@@ -1,152 +1,217 @@
-Here’s a **quick reference of Azure Table Storage commands** across **Azure CLI**, **PowerShell**, and **.NET SDK / Storage Explorer** for CRUD operations and management:
+![Image](https://scotthelme.co.uk/content/images/2015/06/table-storage-partitions-diagram.png)
+
+![Image](https://learn.microsoft.com/en-us/azure/storage/tables/media/storage-table-design-guide/storage-table-design-image12.png)
+
+![Image](https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/value-prop?fit=constrain\&fmt=png-alpha\&op_usm=1.5%2C0.65%2C15%2C0\&qlt=100\&resMode=sharp2\&wid=847)
+
+# 🔹 Azure Table Storage – Basic Documentation (Simple & Clear)
+
+## 📌 What is Azure Table Storage?
+
+Azure Table Storage is a **NoSQL key-value storage service** used to store **structured data** at large scale.
+
+* No joins
+* No fixed schema
+* Fast access using keys
 
 ---
 
-## ⚡ Azure CLI (with `az storage entity` and `az storage table`)
+## 🧱 Core Concepts (Must Know)
 
-First, set environment variables for convenience:
+| Term         | Meaning            |
+| ------------ | ------------------ |
+| Table        | Collection of rows |
+| Entity       | Single row         |
+| Property     | Column             |
+| PartitionKey | Groups data        |
+| RowKey       | Unique ID          |
+
+🔑 **PartitionKey + RowKey = Primary Key**
+
+---
+
+## 🧪 Azure CLI – BASIC Commands Only
+
+### 🔐 Set Variables
 
 ```bash
-export AZURE_STORAGE_ACCOUNT=<your_storage_account>
-export AZURE_STORAGE_KEY=<your_access_key>
+export AZURE_STORAGE_ACCOUNT=mystorage
+export AZURE_STORAGE_KEY=<key>
 ```
 
-### 1. Create a Table
+---
+
+### 1️⃣ Create Table
 
 ```bash
 az storage table create \
-  --name myTable \
+  --name demoTable \
   --account-name $AZURE_STORAGE_ACCOUNT \
   --account-key $AZURE_STORAGE_KEY
 ```
 
-### 2. Insert an Entity (Row)
+---
+
+### 2️⃣ Insert Entity
 
 ```bash
 az storage entity insert \
-  --table-name myTable \
-  --entity PartitionKey=demo RowKey=1 Name=Atul Age=30 \
+  --table-name demoTable \
+  --entity PartitionKey=Users RowKey=1 Name=Atul City=Pune \
   --account-name $AZURE_STORAGE_ACCOUNT \
   --account-key $AZURE_STORAGE_KEY
 ```
 
-### 3. Query Entities
+---
+
+### 3️⃣ Read / Query Entity
 
 ```bash
 az storage entity query \
-  --table-name myTable \
+  --table-name demoTable \
   --account-name $AZURE_STORAGE_ACCOUNT \
   --account-key $AZURE_STORAGE_KEY
 ```
 
-### 4. Delete an Entity
+---
+
+### 4️⃣ Update Entity
+
+```bash
+az storage entity merge \
+  --table-name demoTable \
+  --entity PartitionKey=Users RowKey=1 City=Mumbai \
+  --account-name $AZURE_STORAGE_ACCOUNT \
+  --account-key $AZURE_STORAGE_KEY
+```
+
+---
+
+### 5️⃣ Delete Entity
 
 ```bash
 az storage entity delete \
-  --table-name myTable \
-  --partition-key demo \
+  --table-name demoTable \
+  --partition-key Users \
   --row-key 1 \
   --account-name $AZURE_STORAGE_ACCOUNT \
   --account-key $AZURE_STORAGE_KEY
 ```
 
-### 5. Delete a Table
+---
+
+### 6️⃣ Delete Table
 
 ```bash
 az storage table delete \
-  --name myTable \
+  --name demoTable \
   --account-name $AZURE_STORAGE_ACCOUNT \
   --account-key $AZURE_STORAGE_KEY
 ```
 
 ---
 
-## ⚡ PowerShell
+## ⚡ PowerShell – BASIC
 
-Make sure you have **Az.Storage** module installed.
-
-### 1. Create Table
+### Create Context
 
 ```powershell
-$ctx = New-AzStorageContext -StorageAccountName "mystorage" -StorageAccountKey "<key>"
-New-AzStorageTable -Name "myTable" -Context $ctx
-```
-
-### 2. Insert Entity
-
-```powershell
-Add-AzTableRow `
-  -Table "myTable" `
-  -PartitionKey "demo" `
-  -RowKey "1" `
-  -Property @{ Name = "Atul"; Age = 30 } `
-  -Context $ctx
-```
-
-### 3. Query Entities
-
-```powershell
-Get-AzTableRow -Table "myTable" -PartitionKey "demo" -Context $ctx
-```
-
-### 4. Delete Entity
-
-```powershell
-Remove-AzTableRow -Table "myTable" -PartitionKey "demo" -RowKey "1" -Context $ctx
-```
-
-### 5. Delete Table
-
-```powershell
-Remove-AzStorageTable -Name "myTable" -Context $ctx
+$ctx = New-AzStorageContext `
+  -StorageAccountName "mystorage" `
+  -StorageAccountKey "<key>"
 ```
 
 ---
 
-## ⚡ .NET SDK (C# Example)
+### Create Table
 
-Install NuGet package:
-
-```bash
-dotnet add package Azure.Data.Tables
+```powershell
+New-AzStorageTable -Name "demoTable" -Context $ctx
 ```
+
+---
+
+### Insert Entity
+
+```powershell
+Add-AzTableRow `
+  -Table "demoTable" `
+  -PartitionKey "Users" `
+  -RowKey "1" `
+  -Property @{ Name="Atul"; City="Pune" } `
+  -Context $ctx
+```
+
+---
+
+### Read Entity
+
+```powershell
+Get-AzTableRow -Table "demoTable" -PartitionKey "Users" -Context $ctx
+```
+
+---
+
+### Delete Entity
+
+```powershell
+Remove-AzTableRow -Table "demoTable" -PartitionKey "Users" -RowKey "1" -Context $ctx
+```
+
+---
+
+## ⚡ .NET SDK (C# – Minimal)
 
 ```csharp
 using Azure.Data.Tables;
 
-var serviceClient = new TableServiceClient("<connection_string>");
-var tableClient = serviceClient.GetTableClient("myTable");
-await tableClient.CreateIfNotExistsAsync();
+var client = new TableClient("<connection_string>", "demoTable");
 
-// Insert entity
-var entity = new TableEntity("demo", "1")
-{
-    { "Name", "Atul" },
-    { "Age", 30 }
-};
-await tableClient.AddEntityAsync(entity);
+// Insert
+var entity = new TableEntity("Users", "1");
+entity["Name"] = "Atul";
+entity["City"] = "Pune";
+client.AddEntity(entity);
 
-// Query entity
-var results = tableClient.Query<TableEntity>(e => e.PartitionKey == "demo");
+// Read
+var result = client.Query<TableEntity>(e => e.PartitionKey == "Users");
 
-// Delete entity
-await tableClient.DeleteEntityAsync("demo", "1");
-
-// Delete table
-await tableClient.DeleteAsync();
+// Delete
+client.DeleteEntity("Users", "1");
 ```
 
 ---
 
-## ⚡ Storage Explorer (GUI Option)
+## 🖥️ GUI – Azure Storage Explorer
 
-* Open **Azure Storage Explorer** (free desktop tool).
-* Connect to your **storage account**.
-* Navigate to **Tables → myTable**.
-* Right-click → Insert, Query, Delete entities.
+* Open Storage Explorer
+* Storage Account → Tables
+* Right-click → Insert / Edit / Delete
+
+(No code needed)
 
 ---
 
-✅ These commands cover **full CRUD operations** (Create, Read, Update, Delete) for Azure Table Storage in multiple environments.
+## ⚠️ Simple Rules (Interview)
 
-Would you like me to also prepare a **step-by-step mini-project** (like “Employee Table with CRUD using Azure CLI + PowerShell + SDK”) so you can use it in **Cloudnautic training repos**?
+* NoSQL = No joins
+* Fast lookup = Good PartitionKey
+* Entity size max = **1 MB**
+* Schema-less storage
+
+---
+
+## 🎯 Exam Tip (AZ-900 / AZ-104)
+
+* **User data → Table Storage**
+* **Messages → Queue Storage**
+* **Key-Value data → Table**
+
+---
+
+### ✅ This version is:
+
+✔ Beginner friendly
+✔ Minimal commands
+✔ Classroom ready
+✔ Interview oriented
